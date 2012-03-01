@@ -1,0 +1,75 @@
+#topbar {
+  height: 40px;
+  width: 100%;
+  background: gray;
+}
+
+body {
+  background: gray;
+}
+
+#container {
+  background: gray;
+  margin-top: 0px;
+  position: relative;
+}
+
+#contents {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  max-width: 800px;
+  background: white;
+  position: relative;
+}
+
+#navigation div {
+  width: 40px;
+  height: 40px;
+  background: -webkit-linear-gradient(rgb(200, 200, 200), rgb(150, 150, 150));
+  font-size: larger;
+  font-weight: bold;
+  text-align: center;
+  line-height: 36px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  position: relative;
+}
+
+#navigation #forward {
+  float: right;
+  right: -40px;
+}
+
+#navigation #backward {
+  float: left;
+  left: -40px;
+}
+
+#contents #navigation {
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  top: 0px;
+  margin-left: 0px;
+}
+
+#navigation div:hover {
+  background: -webkit-linear-gradient(rgb(220, 220, 220), rgb(170, 170, 170));
+}
+
+p {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+header {
+  font-size: larger;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#contents .source {
+  margin-left: 40px;
+}

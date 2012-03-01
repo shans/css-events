@@ -1,0 +1,25 @@
+TODO List
+
+* ComputedStyleChanged events triggered by phantom style changes are provided
+  faked style objects containing only the changed phantom style. They should
+  contain complete computedStyle information instead.
+
+* Emulated events should be able to be cancelled when bubbling.
+
+* MatchedCSSRulesChanged events should be triggered for changes in phantom
+  rules.
+
+* Phantom styles should be able to be added to existing rules, not just new
+  ones.
+
+* Per-selector StyleRuleChanged handlers should not overwrite existing handlers
+  when added.
+
+* Should be able to filter on properties when registering StyleRuleChanged
+  handlers.
+
+* Global StyleRuleChanged handlers should not overwrite existing handlers when
+  added.
+
+* Should automatically detect element creation / removal and style change, and
+  remove addElementTree / removeElementTree / styleSheetChanged from public API

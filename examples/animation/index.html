@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents .playground {
+  width: 600px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#transition, #animation, #newAnimation {
+  position: relative;
+  left: 250px;
+  width: 100px;
+  height: 80px;
+  line-height: 80px;
+  top: 20px;
+  background-color: rgb(200, 200, 255);
+  text-align: center;
+  font-size: 20px;
+}
+
+@-webkit-keyframes animation-keyframes {
+  from, to { left: 250px; width: 100px; background-color: rgb(200, 200, 255); }
+  25%, 75% { left: 20px; width: 560px; background-color: rgb(200, 255, 200); } 
+  50% { left: 100px; width: 400px; background-color: rgb(255, 200, 200); }
+}
+    </style>
+    <style type="text/excss" id="transitiontext">
+#transition:hover {
+  left: 20px;
+  width: 560px;
+  background-color: rgb(255, 200, 200);
+}
+
+
+#transition {
+  -webkit-transition-property: all;
+  -webkit-transition-duration: 1s;
+}
+    </style>
+    <style type="text/excss" id="animationtext">
+#animation {
+  -webkit-animation-name: animation-keyframes;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes animation-keyframes {
+  from, to { left: 250px; width: 100px; background-color: rgb(200, 200, 255); }
+  25%, 75% { left: 20px; width: 560px; background-color: rgb(200, 255, 200); } 
+  50% { left: 100px; width: 400px; background-color: rgb(255, 200, 200); }
+}
+    </style>
+    <style type="text/excss">
+#newAnimation {
+  state-widget: unhovered;
+}
+
+#newAnimation:hover {
+  state-widget: hovered;
+  width: 560px;
+  left: 20px;
+  background-color: rgb(255, 200, 200);
+}
+
+@keyframes animation-keyframes-2 {
+  from { left: from(); width: from(); background-color: from(); }
+  33% { left: 100px; width: 400px; background-color: rgb(100, 100, 128); }
+  66% { left: 200px; width: 200px; background-color: rgb(128, 100, 100); }
+  to { left: to(); width: to(); background-color: to(); }
+}
+
+@transition-graph #newAnimation {
+  over: state-widget;
+  @edge(unhovered, hovered) {animation: animation-keyframes-2 1s; }
+  @edge(hovered, unhovered) {animation: transition(width, left, background-color) 0.5s; }
+}
+    </style>
+  </head>
+  <body>
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - Examples
+      </header>
+
+      <p>Currently CSS provides transitions and animations as two separate
+mechanisms for declaratively specifying animated behaviour in web pages.</p>
+
+
+      <p>Transitions allow the declaration of simple animations triggered by changes of
+property values. However, fine-grained control of precisely which property
+changes trigger transitions is not supported, nor is anything but
+simple interpolation between the from and to values.</p>
+      
+    <p>Furthermore, transitions are always instantaneously applied in response
+to a property change - there is no concept of transition completion.  Notice in
+the following example that the transition instantaneously reverses when you
+stop hovering over the element.
+
+      <div class="playground">
+        <div id="transition">Hover</div>
+      </div>
+
+    <p>Here is the source:</p>
+      
+      <div id="transitiontext_excss" class="source"></div>
+
+      <p>On the other hand, animations provide complex animations that allow
+interpolation between multiple keyframes.  Animations also have a well-defined
+start and end.  However, animations are always-on while selected and have
+absolutely specified start and end points, and hence can't be used for
+transition-like effects without javascript support:</p>
+
+      <div class="playground">
+        <div id="animation">Always On!</div>
+      </div>
+
+      <p><a href="javascript:stop()">STOP THAT!</a></p>
+
+      <p>Here is the source for this example:</p>
+
+      <div id="animationtext_excss" class="source"></div>
+
+      <p>The CSS Transitions extension proposed by Tab Atkins <a
+href="http://lists.w3.org/Archives/Public/www-style/2011Apr/0041.html">on
+www-style</a> combines these two approaches to provide a range of new
+capabilities that are not possible to access declaratively with the existing
+framework. For example, here is a hover-initiated transition with a keyframe-based
+animation that always completes before reversing:
+
+
+      <div class="playground">
+        <div id="newAnimation">Hover</div>
+      </div>
+
+      <p>We're calling these new capabilities "state-based transitions".  The
+following pages contain a series of examples used to demonstrate the proposed
+extension.</p>
+
+    <div id="navigation">
+    </div>
+    </section>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+
+function stop() {
+  var anim = document.querySelector("#animation");
+  anim.setAttribute("style", "-webkit-animation-name: none;");
+  setTimeout(function() { anim.innerHTML = "Stopped :("; }, 0);
+}
+
+prettyPrint();
+</script>
+</html>

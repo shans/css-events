@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents .playground {
+  width: 600px;
+  height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.animation {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  margin-bottom: 20px;
+  -webkit-animation-timing-function: ease-in-out;
+}
+    </style>
+    <style type="text/excss" id="animation-style">
+.animation {
+  top: 20px;
+  left: 20px;
+  state-animation: start;
+  background-color: rgb(200, 200, 255);
+  -webkit-border-radius: 0px;
+}  
+
+.animation.right {
+  left: 500px;
+  top: -80px;
+  background-color: yellow;
+}
+
+.animation.right:hover {
+  left: 500px;
+  top: 400px;
+  background-color: rgb(200, 255, 200);
+  state-animation: end;
+}
+  
+.animation:hover {
+  top: 500px;
+  state-animation: end;
+  background-color: rgb(255, 200, 200);
+  -webkit-border-radius: 100px;
+}
+
+@transition-graph .animation {
+  over: state-animation;
+  @edge(start, end) {
+    animation: keyframed-path 2s;
+  }
+}
+
+@keyframes keyframed-path {
+  from { top: from(); left: from(); background-color: from(); -webkit-border-radius: from() }
+  25%, 75% { left: 500px; }
+  50% { left: 20px; }
+  to { top: to(); left: to(); background-color: to(); -webkit-border-radius: to() }
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - using keyframes
+      </header>
+
+      <p>Another advantage of this proposal is the ability to specify
+keyframe-based animations that are keyed off property transitions.  For
+example:</p>
+
+      <div class="playground">
+      <div class="animation"></div>
+      <div class="animation right"></div>
+      </div>
+
+      <p>Here is the source for this example. Notice the "from" and "to"
+functions that allow us to capture the start and end state of the animation in
+a reusable fashion.</p>
+
+      <div id="animation-style_excss" class="source"></div>
+
+
+    <div id="navigation">
+    </div>
+    </section>
+    </div>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+prettyPrint();
+</script>
+</html>
+

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents #playground {
+  width: 600px;
+  height: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#animateMe {
+  -webkit-animation-timing-function: ease-in-out;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  z-index: 100;
+  font-size: 64px;
+  font-weight: bolder;
+  text-align: center;
+  line-height: 80px;
+  -webkit-user-select: none;
+}
+
+#arrow1 {
+  position: relative;
+  -webkit-transform: rotate(50deg);
+  top: 80px;
+  left: 140px;
+}
+
+#arrow2 {
+  position: relative;
+  -webkit-transform: rotate(-50deg);
+  top: 80px;
+  left: 230px;
+}
+
+#arrow3 {
+  position: relative;
+  -webkit-transform: rotate(130deg);
+  top: 120px;
+  left: 150px;
+}
+
+#arrow4 {
+  position: relative;
+  -webkit-transform: rotate(-130deg);
+  top: 120px;
+  left: -260px;
+}
+
+#buttons {
+  position: relative;
+  left: 520px;
+  top: 160px;
+}
+
+#buttons div {
+  width: 40px;
+  height: 30px;
+  background-color: rgb(200, 200, 200);
+  text-align: center;
+  line-height: 30px;
+}
+
+
+    </style>
+    <style type="text/excss" id="uhoh">
+#myElement:hover {
+  state-path: B;
+  color: red;
+}
+
+#myElement.aClass {
+  state-path: B;
+  color: green;
+}
+
+#myElement[someProperty] {
+  state-path: B;
+  color: blue;
+}
+    </style>
+    <style type="text/excss" id="animation">
+#animateMe[position=A] {
+  left: 20px;
+  top: 20px;
+  background-color: rgb(200, 200, 255);
+  -webkit-border-radius: 0px;
+  color: rgb(0, 0, 255);
+  state-path: A;
+}  
+
+#animateMe[position=B] {
+  state-path: B;
+}
+
+#animateMe[position=C] {
+  left: 500px;
+  top: 20px;
+  background-color: rgb(200, 255, 200);
+  color: rgb(0, 255, 0);
+  state-path: C;
+}
+
+@transition-graph #animateMe {
+  over: state-path;
+  @edge(A, B) { 
+    animation: transition(left, top, background-color, -webkit-border-radius, color) 0.5s; 
+    direction: both;
+  }
+  @edge(B, C) {
+    animation: transition(left, top, background-color, -webkit-border-radius, color) 1.0s; 
+    direction: both;
+  }
+  @node(B) {
+    left: 260px;
+    top: 300px;
+    background-color: rgb(255, 200, 200);
+    -webkit-border-radius: 100px;
+    color: rgb(255, 0, 0);
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - Animation Paths
+      </header>
+
+      <p>Because we're tracking state and defining animations via a state
+graph, it's also possible to compute composite paths when no direct path is
+specified between two states.</p> 
+
+      <p>In the example below, states are represented
+by positions - state "A" is top-left, state "B" is bottom-middle, and state "C"
+is top-right.  @edges are represented by gray arrows. Clicking on
+the widget causes it to cycle between the three states. Clicking on one of the
+three state buttons causes the widget to change directly to that state.</p>
+
+      <p>The gray arrows in the example illustrate animation edges which have
+been defined.  You can see that there's a defined animation between "A" and
+"B", and between "B" and "C", but no direct edge between "C" and "A".</p>
+
+      <div id="playground">
+      <div id="animateMe" position="A">A</div>
+      <img id="arrow1" src="arrow.png">
+      <img id="arrow2" src="arrow.png">
+      <img id="arrow3" src="arrow.png">
+      <img id="arrow4" src="arrow.png">
+      <div id="buttons">
+        <div id="A">A</div>
+        <div id="B">B</div>
+        <div id="C">C</div>
+      </div>
+      </div>
+
+      <p>Notice that when transitioning from "A" to "B", or from "B" to "C",
+there is a direct animation and hence a direct path.  However, when
+transitioning from "C" to "A" there is no direct path, and the shortest path
+via "B" is used instead.</p>
+
+      <p>To get more of a feel for the consequences of shortest-path
+animation, try putting the widget into state "C", then quickly clicking "A"
+then "B".  The first click causes a transition to state "A" and an animation is
+initiated.  While this animation is in progress, the second click causes a
+transition to state "B".  However, the shortest path to "B" involves simply
+completing the current leg of the animation then terminating, rather than
+visiting "A" first.</p>
+
+      <p>There is a complication here, and it's a little subtle. When a state
+change of our property ("state-path") triggers a transition between "A" and
+"B", we know the original style (it's the used style just before the state
+change) and the destination style (it's the current used style of the object),
+so we can correctly generate the transition between the two styles.</p>
+
+      <p>On the other hand, when a state change triggers a transition between
+"A" and "C", we still know the original style, but for the first leg of the
+animation (to "B") we don't have a destination style. This is because it's not
+possible to go from a value of "state-path" back to a used style - used styles
+can only be generated by looking up the set of selectors that match an element
+and computing style from that set; and "state-path" is part of the used style,
+not a property of the element that we can select on. Take the following CSS as
+an example:</p>
+
+    <div id="uhoh_excss" class="source"></div>
+
+    <p>What is the correct value of "color" when "state-path" is "B"? It's not
+in general possible to tell.</p>
+
+      <p>As a result, we can't use the standard selector mechanism to determine
+what the intermediate state is in an animation path with multiple path
+segments. Instead, an @node primitive is provided within @transition-graph. The
+effect of this primitive is to apply all of the contained style rules to an
+element whenever that element's "over" property has the value referenced by the
+@node.</p>
+
+      <p>Here is the source for this example.</p>
+
+      <div id="animation_excss" class="source"></div>
+
+      <p>Here, the @node primitive indicates that whenever state-path has value
+B for an element selected by #animateMe, the provided left, top,
+background-color, -webkit-border-radius and color values should apply to that
+element. Conceptually this forms a style rule with a selector that is activated
+depending on the value of state-path, with a specificity lower than that of any
+normally defined style rules.</p>
+
+    <div id="navigation">
+    </div>
+    </section>
+    </div>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+document.querySelector("#animateMe").onclick = function(event) {
+  var state = event.target.getAttribute("position");
+  if (state == "A") {
+    state = "B";
+  } else if (state == "B") {
+    state = "C";
+  } else {
+    state = "A";
+  }
+
+  setState(state);
+}
+
+var colors = {A : "rgb(200,200,255)",
+              B : "rgb(255,200,200)",
+              C : "rgb(200,255,200)"};
+
+function setState(newState) {
+  var obj = document.querySelector("#animateMe");
+  obj.setAttribute("position", newState);
+  obj.innerHTML = newState;
+
+  document.querySelector("#A").style["background-color"] = "rgb(200,200,200)";  
+  document.querySelector("#B").style["background-color"] = "rgb(200,200,200)";  
+  document.querySelector("#C").style["background-color"] = "rgb(200,200,200)";  
+  document.querySelector("#"+newState).style["background-color"] = colors[newState]; 
+}
+
+document.querySelector("#A").onclick = function(event) {setState("A");};
+document.querySelector("#B").onclick = function(event) {setState("B");};
+document.querySelector("#C").onclick = function(event) {setState("C");};
+
+setState("A");
+
+prettyPrint();
+</script>
+</html>

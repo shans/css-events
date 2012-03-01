@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents #playground {
+  width: 600px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#animation {
+  position: relative;
+  height: 80px;
+  line-height: 80px;
+  top: 20px;
+  text-align: center;
+  font-size: 20px;
+}
+    </style>
+    <style type="text/excss" id="animation-style">
+#animation {
+  width: 100px;
+  left: 250px;
+  background-color: rgb(200, 200, 255);
+}
+
+#animation:hover {
+  width: 560px;
+  left: 20px;
+  background-color: rgb(255, 200, 200);
+}
+
+@transition-graph #animation {
+  over: width;
+  @edge(100px, 560px) {animation: transition(width, left, background-color) 0.5s; }
+  @edge(560px, 100px) {animation: transition(width, left, background-color) 0.5s; }
+}
+    </style>
+  </head>
+  <body>
+    <div id="invisible" style="position:fixed;top:0;width:0;height:0;"></div>
+
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - a simple example
+      </header>
+
+      <p>Here is a simple example of state-based transitions in action.  Try
+hovering over the blue square.</p>
+
+      <div id="playground">
+      <div id="animation"></div>
+      </div>
+
+      <p>Here is the source for this example.</p>
+
+      <div id="animation-style_excss" class="source"></div>
+
+      <p>The central idea behind state-based transitions is to allow
+specification of animations between defined states of DOM elements.  This
+information is gathered together in an "@transition-graph" at-rule, which uses
+a selector to determine when the graph should be applied.</p>
+
+      <p>In this case, we're tracking the state of the width property ("over:
+width"), and looking for transitions from 100px to 560px ("@edge(100px,
+560px)") and vice-versa ("@edge(560px, 100px)").</p> 
+
+      <p>Each transition contains an "animation:" specification. Here we use a
+transition function, also defined in this extension proposal, which generates
+an anonymous keyframes set from the from- state of the transition to the to-
+state of the transition for the provided properties. It's also possible to use
+named keyframes sets, as we'll see in later examples.</p>
+
+    <div id="navigation">
+    </div>
+    </section>
+    </div>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+prettyPrint();
+</script>
+</html>

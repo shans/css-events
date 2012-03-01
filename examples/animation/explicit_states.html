@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents #playground {
+  width: 600px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#animation {
+  position: relative;
+  height: 80px;
+  line-height: 80px;
+  top: 20px;
+  text-align: center;
+  font-size: 20px;
+}
+    </style>
+    <style type="text/excss" id="animation-style">
+#animation {
+  state-hover: unhovered;
+  width: 100px;
+  left: 250px;
+  background-color: rgb(200, 200, 255);
+}
+
+#animation:hover {
+  state-hover: hovered;
+  width: 560px;
+  left: 20px;
+  background-color: rgb(255, 200, 200);
+}
+
+@transition-graph #animation {
+  over: state-hover;
+  @edge(unhovered, hovered) {
+    animation: transition(width, left, background-color) 0.5s;
+    direction: both
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="invisible" style="position:fixed;top:0;width:0;height:0;"></div>
+
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - explicit state specification
+      </header>
+
+      <p>The previous example showed us how to specify transitions keyed off a
+change in property state, and showed us that we could specify transitions
+involving multiple properties. However, triggering an animation on a change in
+"width" doesn't properly convey the high-level meaning of what we are trying to
+do.  Consider this example:
+
+      <div id="animation-style_excss" class="source"></div>
+
+      <div id="playground">
+      <div id="animation"></div>
+      </div>
+
+      <p>Here we are providing the same behaviour as in the previous example,
+but rather than keying the transition off the width (which changes as a
+consequence of the desired hover styling) we are transitioning off a new,
+user-defined property, "state-hover". This proposal includes a family of
+user-named properties, all prefixed by "state-", to support named transition
+behaviour.</p>
+
+<p>In order to indicate when this property changes, we provide definitions in
+the style rules for "#animation" and "#animation:hovered". The result is a
+transition-graph that more accurately specifies the intent of the
+transition.</p>
+
+      <p>Also note the use of the property "direction: both" in our @edge
+definition.  This specifies that this edge is reversible, and is useful
+whenever the forward and reverse definitions of a state change animation are
+the same.</p>
+
+    <div id="navigation">
+    </div>
+    </section>
+    </div>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+prettyPrint();
+</script>
+</html>
+

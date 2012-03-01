@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="animation_examples.css" type="text/css"/>
+    <style type="text/css">
+#contents .playground {
+  width: 600px;
+  height: 120px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px black solid;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+#animateMeNew, #animateMeOld {
+  -webkit-animation-timing-function: ease-in-out;
+  position: relative;
+  top: 20px;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+    </style>
+    <style type="text/excss" id="animationOld">
+#animateMeOld {
+  left: 20px;
+  background-color: rgb(200, 200, 255);
+  -webkit-border-radius: 0px;
+  -webkit-transition-property: all;
+  -webkit-transition-duration: 0.5s;
+}
+
+#animateMeOld:hover {
+  left: 500px;
+  background-color: rgb(255, 200, 200);
+  -webkit-border-radius: 100px;
+}
+    </style>
+    <style type="text/excss" id="animation">
+#animateMeNew {
+  left: 20px;
+  background-color: rgb(200, 200, 255);
+  -webkit-border-radius: 0px;
+  state-widget: unhovered;
+}
+
+#animateMeNew:hover {
+  left: 500px;
+  background-color: rgb(255, 200, 200);
+  -webkit-border-radius: 100px;
+  state-widget: hovered;
+}
+
+@transition-graph #animateMeNew {
+  over: state-widget;
+  @edge(unhovered, hovered) {
+    animation: transition(width, height, left, background-color, -webkit-border-radius) 0.5s;
+    direction: both;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="topbar"></div>
+    <div id="container">
+    <section id="contents">
+      <header>
+        CSS Transitions extension - so what's the difference?
+      </header>
+
+      <p>We are now in a position to identify one of the key new capabilities
+provided by the proposal.  The following two boxes are controlled by a CSS
+level 3 transition and a proposed level 4 transition respectively.  Both are
+activated by hovering.  Move your mouse cursor back and forth over the two
+widgets to see how they react differently.</p>
+
+      <div class="playground">
+      <div id="animateMeOld">The Old</div>
+      </div>
+      <div class="playground">
+      <div id="animateMeNew">The New</div>
+      </div>
+
+      <p>Notice that the old transition terminates and reverses as soon as the
+element loses hover, but that the new transition always completes. By
+specifying transitions as edges of a state graph, we move away from the notion
+that transition state is lost when the transitioned value changes and allow
+graceful completion of the transition. We plan on supporting a range of behaviours when a transition is interrupted, including the demonstrated always-complete behaviour and the existing interrupt behaviour.</p>
+
+      <p>Here are the sources for this example. For old style transition:</p>
+
+      <div id="animationOld_excss" class="source"></div>
+
+      <p>For the new one:</p>
+
+      <div id="animation_excss" class="source"></div>
+
+    <div id="navigation">
+    </div>
+    </section>
+    </div>
+  </body>
+<script src="populate_source.js"></script>
+<script src="../../css-events.js"></script>
+<script src="excss_animation.js"></script>
+<script src="http://experimental-css.googlecode.com/hg/excss.js" explicit="true"></script>
+<script src="excss_parse_animation.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/lang-css.js"></script>
+<script src="navButtons.js"></script>
+<script>
+prettyPrint();
+</script>
+</html>
